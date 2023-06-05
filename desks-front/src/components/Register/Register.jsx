@@ -1,29 +1,41 @@
-import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import React from "react";
 import firebase from "../../firebase";
+
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import TextInput from "./UI/TextInput";
+import PasswordInput from "./UI/PasswordInput";
 
 const bcrypt = require("bcryptjs");
 
 const Register = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const validationSchema = Yup.object().shape({
+        username: Yup.string()
+            .email("Invalid email address")
+            .required("Username is required"),
+        password: Yup.string().required("Password is required"),
+    });
 
-    const handleRegister = async (event) => {
-        event.preventDefault();
+    const handleRegister = async (
+        { username, password },
+        { setSubmitting }
+    ) => {
+        setSubmitting(false);
+
         try {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
-            // Store registration data in Firebase
+            // store registration data in firebase
             const registrationData = {
                 username,
                 password: `${salt}.${hashedPassword}`,
             };
 
-            // Firebase database reference
+            // firebase database reference
             const dbRef = firebase.database().ref("users");
 
-            // Push registration data to Firebase
+            // push registration data to firebase
             const newRegistrationRef = dbRef.push();
             await newRegistrationRef.set(registrationData);
         } catch (error) {
@@ -34,35 +46,26 @@ const Register = () => {
     return (
         <div className="container">
             <h1>Register</h1>
-            <Form>
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter username"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                    />
-                </Form.Group>
+            <Formik
+                initialValues={{ username: "", password: "" }}
+                validationSchema={validationSchema}
+                onSubmit={handleRegister}
+            >
+                {({ isSubmitting }) => (
+                    <Form>
+                        <TextInput label="Username" name="username" />
+                        <PasswordInput label="Password" name="password" />
 
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                    />
-                </Form.Group>
-
-                <Button
-                    variant="primary"
-                    type="submit"
-                    onClick={handleRegister}
-                >
-                    Register
-                </Button>
-            </Form>
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={isSubmitting}
+                        >
+                            Register
+                        </button>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };
