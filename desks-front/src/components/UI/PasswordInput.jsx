@@ -1,12 +1,12 @@
 import { ErrorMessage, Field } from "formik";
 
-const TextInput = ({ label, name, ...rest }) => {
+const PasswordInput = ({ id, label, name, ...rest }) => {
     return (
         <div className="form-group">
             <label htmlFor={name}>{label}</label>
             <Field
-                type="text"
-                id={name}
+                type="password"
+                id={id}
                 name={name}
                 className="form-control"
                 {...rest}
@@ -20,4 +20,4 @@ const TextInput = ({ label, name, ...rest }) => {
     );
 };
 
-export default TextInput;
+export default PasswordInput;
