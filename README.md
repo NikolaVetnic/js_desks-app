@@ -1,6 +1,6 @@
-# j&s-soft Desks App
+# j&s-soft Desk Tracking App
 
-j&s-soft Desks App.
+j&s-soft Desk Tracking App.
 
 ## Links
 
