@@ -1,5 +1,6 @@
 import CryptoJS from "crypto-js";
 
+// TODO: token should be generated on the server side, look into the firebase possibilites
 const generateJWT = (payload) => {
     const header = { alg: "HS256", typ: "JWT" };
     const encodedHeader = b64url(
