@@ -1,0 +1,8 @@
+.navbar-logo {
+    width: 170px; /* Adjust the width as per your requirement */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.nav-link-text {
+    font-size: 20px; /* Adjust the font size as per your preference */
+}
