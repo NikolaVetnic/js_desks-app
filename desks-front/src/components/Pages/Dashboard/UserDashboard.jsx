@@ -24,13 +24,7 @@ const Dashboard = ({ username }) => {
                 </select>
             </div>
 
-            <div>
-                {
-                location !== "" ? (
-                    <DeskContainer location={location}/>
-                ):""
-                }
-            </div>
+            <div>{!!location ? <DeskContainer location={location} /> : ""}</div>
         </div>
     );
 };
