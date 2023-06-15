@@ -1,4 +1,5 @@
 import { useState } from "react";
+import DeskContainer from "../../UI/Desk/DeskContainer";
 
 const Dashboard = ({ username }) => {
     const [location, setLocation] = useState("");
@@ -22,6 +23,8 @@ const Dashboard = ({ username }) => {
                     <option value="ns">Novi Sad</option>
                 </select>
             </div>
+
+            <div>{!!location ? <DeskContainer location={location} /> : ""}</div>
         </div>
     );
 };
