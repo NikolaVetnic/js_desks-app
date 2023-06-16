@@ -54,3 +54,5 @@ const AddDeskForm = () => {
         </div>
     )
 }
+
+export default AddDeskForm
