@@ -26,14 +26,14 @@ const AddDeskForm = () => {
             >
                 <Form>
                     <div className="form-group">
-                        <label htmlFor="dropdown">Choose location:</label>
-                        <Field as="select" id="dropdown" name="dropdown" className="form-control" >
+                        <label htmlFor="location">Choose location:</label>
+                        <Field as="select" id="location" name="location" className="form-control" >
                             <option value="">- location -</option>
                             <option value="hd">Heidelberg</option>
                             <option value="md">Magdeburg</option>
                             <option value="ns">Novi Sad</option>
                         </Field>
-                        <ErrorMessage name="dropdown" component="div" className="text-danger" />
+                        <ErrorMessage name="location" component="div" className="text-danger" />
                     </div>
 
                     <div className="form-group">
