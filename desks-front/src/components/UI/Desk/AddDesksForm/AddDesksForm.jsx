@@ -26,26 +26,26 @@ const AddDeskForm = () => {
             >
                 <Form>
                     <div className="form-group">
-                        <label htmlFor="dropdown">City:</label>
+                        <label htmlFor="dropdown">Choose location:</label>
                         <Field as="select" id="dropdown" name="dropdown" className="form-control" >
-                            <option value="">- Select an option -</option>
-                            <option value="">- Select an option -</option>
-                            <option value="">- Select an option -</option>
-                            <option value="">- Select an option -</option>
+                            <option value="">- location -</option>
+                            <option value="hd">Heidelberg</option>
+                            <option value="md">Magdeburg</option>
+                            <option value="ns">Novi Sad</option>
                         </Field>
                         <ErrorMessage name="dropdown" component="div" className="text-danger" />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="number1">Number 1:</label>
-                        <Field type="number" id="number1" name="number1" className="form-control" />
-                        <ErrorMessage name="number1" component="div" className="text-danger" />
+                        <label htmlFor="room">Room no:</label>
+                        <Field type="number" id="room" name="room" className="form-control" />
+                        <ErrorMessage name="room" component="div" className="text-danger" />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="number2">Number 1:</label>
-                        <Field type="number" id="number2" name="number2" className="form-control" />
-                        <ErrorMessage name="number2" component="div" className="text-danger" />
+                        <label htmlFor="desk">Desk no:</label>
+                        <Field type="number" id="desk" name="desk" className="form-control" />
+                        <ErrorMessage name="desk" component="div" className="text-danger" />
                     </div>
 
                     <button className="btn btn-primary">Submit</button>
