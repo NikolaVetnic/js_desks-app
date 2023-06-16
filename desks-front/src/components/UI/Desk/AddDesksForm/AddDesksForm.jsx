@@ -54,7 +54,7 @@ const AddDeskForm = () => {
                         <ErrorMessage name="desk" component="div" className="text-danger" />
                     </div>
 
-                    <button className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary">Submit</button>
                 </Form>
             </Formik>
         </div>
