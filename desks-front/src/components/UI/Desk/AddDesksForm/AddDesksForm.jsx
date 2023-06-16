@@ -1,4 +1,5 @@
 import React from "react";
+import firebase from "../../../../firebase";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 import verifyToken from "../../../../utils/verifyToken"
@@ -10,13 +11,20 @@ const validationSchema = Yup.object().shape({
 })
 
 const AddDeskForm = () => {
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         const deskData = {
             ...values,
             "addedBy": verifyToken().username
         }
 
         console.log(deskData)
+
+        // firebase database reference
+        const dbRef = firebase.database().ref("desks");
+
+        // push desk data to firebase
+        const newDeskRef = dbRef.push();
+        await newDeskRef.set(deskData);
     }
 
     return (
