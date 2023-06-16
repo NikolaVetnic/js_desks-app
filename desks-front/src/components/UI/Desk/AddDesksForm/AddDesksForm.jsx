@@ -1,6 +1,7 @@
 import React from "react";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
+import verifyToken from "../../../../utils/verifyToken"
 
 const validationSchema = Yup.object().shape({
     location: Yup.string().required("Please select location"),
@@ -10,7 +11,12 @@ const validationSchema = Yup.object().shape({
 
 const AddDeskForm = () => {
     const handleSubmit = (values) => {
-        console.log(values)
+        const deskData = {
+            ...values,
+            "addedBy": verifyToken().username
+        }
+
+        console.log(deskData)
     }
 
     return (
