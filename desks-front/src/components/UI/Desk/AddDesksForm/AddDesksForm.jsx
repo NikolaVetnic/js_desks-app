@@ -17,9 +17,9 @@ const AddDeskForm = () => {
         <div className="container">
             <h1>Add Desk Form</h1>
             <Formik initialValues={{
-                dropdown: "",
-                number1: 0,
-                number2: 0
+                location: "",
+                room: 0,
+                desk: 0
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
