@@ -3,9 +3,9 @@ import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    dropdown: Yup.string().required("Please select city"),
-    number1: Yup.number().required("Office is required"),
-    number2: Yup.number().required("Desk number is required")
+    location: Yup.string().required("Please select location"),
+    room: Yup.number().required("Room number is required"),
+    desk: Yup.number().required("Desk number is required")
 })
 
 const AddDeskForm = () => {
