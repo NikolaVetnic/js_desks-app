@@ -1,79 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
     Button,
     ButtonToolbar,
-    Modal,
-    OverlayTrigger,
-    Tooltip,
+    OverlayTrigger
 } from "react-bootstrap";
 import "./DeskContainer.css";
+import { AvailableTooltip } from "../Tooltip/Tooltips";
+import DeskReservations from "./DeskReservations/DeskReservations";
 
 const desks = [
-    { location: "hd", room: 1, desk: 1, cretedBy: 1 },
-    { location: "ns", room: 1, desk: 1, cretedBy: 1 },
-    { location: "mg", room: 1, desk: 1, cretedBy: 1 },
+    { location: "hd", room: 1, desk: 1, addedBy: "admin@admin.com" },
+    { location: "ns", room: 1, desk: 1, addedBy: "admin@admin.com" },
+    { location: "ns", room: 2, desk: 3, addedBy: "admin@admin.com" },
+    { location: "ns", room: 3, desk: 2, addedBy: "admin@admin.com" },
+    { location: "md", room: 1, desk: 1, addedBy: "admin@admin.com" },
+    { location: "md", room: 2, desk: 2, addedBy: "admin@admin.com" },
 ];
 
+//{ addedBy: "admin@admin.com", desk: 123, location: "ns", room: 1234 }
 const DeskContainer = ({ location }) => {
-    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    //selected desk variable to change on button clicked
+    const [selectedDesk, setSelectedDesk] = useState(null);
 
-    const tooltip = (
-        <Tooltip>
-            <strong>Available</strong>
-        </Tooltip>
-    );
+    useEffect(() => {
+        if (selectedDesk !== null) {
+          console.log(selectedDesk);
+        }
+      }, [selectedDesk]);
 
-    const positionerInstance = (
-        <ButtonToolbar>
-            <OverlayTrigger placement="top" overlay={tooltip}>
+    const handleModalOpen = (item) => {
+        setSelectedDesk(item);
+    };
+
+    const positionerInstance = (item) => {
+        return (<ButtonToolbar>
+            <OverlayTrigger placement="top" overlay={AvailableTooltip}>
                 <Button
-                    onClick={handleShow}
+                    onClick={() => handleModalOpen(item)}
                     variant="success"
-                    bsStyle="default"
                     className="flexbox-item"
                 ></Button>
             </OverlayTrigger>
-        </ButtonToolbar>
-    );
-
-    const deskRepresentation = (room, desk) => {
-        return (
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Novi Sad</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Room: {room}
-                    <br />
-                    Desk: {desk}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Reserve
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
+        </ButtonToolbar>);
     };
 
     return (
-        <div className="flexbox-container mt-3">
-            {desks.map((item) => {
-                return (
-                    <div>
-                        {positionerInstance}
-                        {deskRepresentation(item.room, item.desk)}
-                    </div>
-                );
-            })}
-        </div>
+        <>
+            <div className="flexbox-container mt-3">
+            <div className="rowChild">
+                {desks.map((item,index) => {
+                    if(location === item.location){
+                        return (
+                            <div key={index}>
+                                {positionerInstance(item)}
+                                
+                            </div>
+                        );
+                    }
+                })}
+            </div>
+            </div>
+            <div>
+                {!!selectedDesk && <DeskReservations prop={selectedDesk} />}
+            </div>
+        </>
     );
 };
 
