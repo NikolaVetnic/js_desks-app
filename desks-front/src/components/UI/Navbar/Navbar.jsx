@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import verifyToken from "../../../utils/verifyToken";
 import Cookies from "js-cookie";
@@ -25,12 +26,12 @@ const Navbar = () => {
             </li>
 
             <li className="nav-item">
-                <button
+                <Button
                     className="nav-link btn btn-link"
                     onClick={handleLogout}
                 >
                     <div style={{ fontSize: "20px" }}>Log Out</div>
-                </button>
+                </Button>
             </li>
         </>
     );
