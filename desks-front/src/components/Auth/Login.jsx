@@ -3,6 +3,7 @@ import { Formik, Form } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { Button } from "react-bootstrap";
 
 import generateJWT from "../../utils/generateJWT";
 import getUserByUsername from "../../utils/getUserByUsername";
@@ -97,9 +98,9 @@ const Login = () => {
                     />
 
                     <div className="d-flex justify-content-center">
-                        <button type="submit" className="btn btn-primary mt-3">
+                        <Button type="submit" className="btn btn-primary mt-3">
                             Login
-                        </button>
+                        </Button>
                     </div>
                 </Form>
             </Formik>
