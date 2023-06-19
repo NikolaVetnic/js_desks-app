@@ -1,4 +1,4 @@
-import AddDeskForm from "../../UI/Desk/AddDesksForm/AddDesksForm";
+import AddDeskForm from "../../UI/Desk/AddDesksForm";
 
 const AdminDashboard = ({ username }) => {
     return (
