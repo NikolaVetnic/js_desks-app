@@ -1,5 +1,5 @@
 const DeskBooking = ({ booking }) => {
-    // TODO: this looks a bit shitty i.e. takes up too much space - should be refactored (ideally as a list, Excel list)
+    // TODO: [JSSBG-19] this looks a bit shitty i.e. takes up too much space - should be refactored (ideally as a list, Excel list)
     return (
         <div className="booking card mb-3">
             <div className="card-body">

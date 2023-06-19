@@ -11,7 +11,7 @@ import Footer from "./components/UI/Footer/Footer";
 import ErrorPage from "./components/Pages/ErrorPage";
 
 function App() {
-    // TODO: resolve that "quick and dirty hack" below
+    // TODO: [JSSBG-17] resolve that "quick and dirty hack" below
     return (
         <div>
             <Navbar />

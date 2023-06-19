@@ -13,7 +13,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const AddBookingForm = () => {
-    // TODO: only display form if there are time slots available during the day
+    // TODO: [JSSBG-18] only display form if there are time slots available during the day
 
     return (
         <div>

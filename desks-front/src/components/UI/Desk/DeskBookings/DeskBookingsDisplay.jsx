@@ -1,6 +1,6 @@
 import DeskBooking from "./DeskBooking";
 
-// TODO: this is just a dummy data - should be replaced with real data from the backend
+// TODO: [JSSBG-26] this is just a dummy data - should be replaced with real data from the backend
 const bookings = [
     {
         room: 1,

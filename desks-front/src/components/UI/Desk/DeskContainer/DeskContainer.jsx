@@ -23,7 +23,6 @@ const menuOptions = [
     { value: "ns", label: "Novi Sad" },
 ];
 
-//{ addedBy: "admin@admin.com", desk: 123, location: "ns", room: 1234 }
 const DeskContainer = () => {
     const [location, setLocation] = useState("");
 
