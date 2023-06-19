@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import firebase from "../../../../firebase";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup";
@@ -62,7 +63,7 @@ const AddDeskForm = () => {
                         <ErrorMessage name="desk" component="div" className="text-danger" />
                     </div>
 
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <Button type="submit" className="btn btn-primary">Submit</Button>
                 </Form>
             </Formik>
         </div>
