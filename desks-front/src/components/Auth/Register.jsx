@@ -2,10 +2,12 @@ import firebase from "../../firebase";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { Button } from "react-bootstrap";
 
 import PasswordInput from "../UI/PasswordInput";
 import Roles from "../../enum/Roles";
 import TextInput from "../UI/TextInput";
+
 
 const bcrypt = require("bcryptjs");
 
@@ -76,13 +78,13 @@ const Register = () => {
                         />
 
                         <div className="d-flex justify-content-center">
-                            <button
+                            <Button
                                 type="submit"
                                 className="btn btn-primary mt-3"
                                 disabled={isSubmitting}
                             >
                                 Register
-                            </button>
+                            </Button>
                         </div>
                     </Form>
                 )}
