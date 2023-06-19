@@ -1,5 +1,5 @@
 import React from "react";
-import Modal from "react-modal";
+import { Button, Modal } from "react-bootstrap";
 import "./OverlayModal.css"; // Import your custom CSS styles for the modal
 
 const OverlayModal = ({ isOpen, onClose, content }) => {
@@ -14,9 +14,9 @@ const OverlayModal = ({ isOpen, onClose, content }) => {
             >
                 <h2>{title}</h2>
                 <p>{msg}</p>
-                <button className="btn btn-primary" onClick={onClose}>
+                <Button className="btn btn-primary" onClick={onClose}>
                     Close
-                </button>
+                </Button>
             </Modal>
         </div>
     );
