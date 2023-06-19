@@ -11,6 +11,7 @@ import Footer from "./components/UI/Footer/Footer";
 import ErrorPage from "./components/Pages/ErrorPage";
 
 function App() {
+    // TODO: resolve that "quick and dirty hack" below
     return (
         <div>
             <Navbar />
@@ -50,6 +51,11 @@ function App() {
                     }
                 />
             </Routes>
+            {/* quick and dirty hack to move the footer downward so that it doesn't obscure parts of app */}
+            <br />
+            <br />
+            <br />
+            <br />
             <Footer />
         </div>
     );
