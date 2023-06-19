@@ -1,3 +1,6 @@
+import AddBookingForm from "./DeskBookings/AddBookingForm";
+import DeskBookingsDisplay from "./DeskBookings/DeskBookingsDisplay";
+
 const SelectedDeskDisplay = (prop) => {
     const city =
         prop.prop.location === "ns"
@@ -12,6 +15,10 @@ const SelectedDeskDisplay = (prop) => {
             <h2>{city}</h2>
             <h4>Room : {prop.prop.room}</h4>
             <h4>Desk : {prop.prop.desk}</h4>
+            <br />
+            <AddBookingForm />
+            <br />
+            <DeskBookingsDisplay />
         </div>
     );
 };
