@@ -16,7 +16,7 @@ const SelectedDeskDisplay = (prop) => {
             <h4>Room : {prop.prop.room}</h4>
             <h4>Desk : {prop.prop.desk}</h4>
             <br />
-            <AddBookingForm />
+            <AddBookingForm location={prop.prop.location} room={prop.prop.room} desk={prop.prop.desk}/>
             <br />
             <DeskBookingsDisplay />
         </div>
