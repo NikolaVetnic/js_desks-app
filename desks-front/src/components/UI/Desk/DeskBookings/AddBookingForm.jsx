@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, TimePicker } from "formik";
 import * as Yup from "yup";
 import addBookingHandleSubmit from "./addBookingHandleSubmit";
 
@@ -12,7 +12,7 @@ const validationSchema = Yup.object().shape({
     bookedBy: Yup.string().email("Invalid email").required("Email is required"),
 });
 
-const AddBookingForm = () => {
+const AddBookingForm = (prop) => {
     // TODO: [JSSBG-18] only display form if there are time slots available during the day
 
     return (
@@ -20,47 +20,18 @@ const AddBookingForm = () => {
             <h1>Add Booking</h1>
             <Formik
                 initialValues={{
-                    room: "",
-                    desk: "",
+                    room: prop.room,
+                    desk: prop.desk,
                     date: "",
                     timeFrom: "",
                     timeTo: "",
                     bookedBy: "",
+                    location: prop.location
                 }}
                 validationSchema={validationSchema}
                 onSubmit={addBookingHandleSubmit}
             >
-                <Form>
-                    {/* TODO: tons of label-Field-ErrMsg components with lots of props - refactoring fodder */}
-                    <div className="form-group">
-                        <label htmlFor="room">Room:</label>
-                        <Field
-                            type="number"
-                            id="room"
-                            name="room"
-                            className="form-control"
-                        />
-                        <ErrorMessage
-                            name="room"
-                            component="div"
-                            className="text-danger"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="desk">Desk:</label>
-                        <Field
-                            type="number"
-                            id="desk"
-                            name="desk"
-                            className="form-control"
-                        />
-                        <ErrorMessage
-                            name="desk"
-                            component="div"
-                            className="text-danger"
-                        />
-                    </div>
+                <Form id="formik-form">
 
                     <div className="form-group">
                         <label htmlFor="date">Date:</label>
@@ -83,7 +54,8 @@ const AddBookingForm = () => {
                             type="time"
                             id="timeFrom"
                             name="timeFrom"
-                            className="form-control"
+                            className="form-control"    
+                            
                         />
                         <ErrorMessage
                             name="timeFrom"
