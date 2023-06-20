@@ -102,8 +102,83 @@ const addBookingHandleSubmit = (values) => {
     // TODO: [JSSBG-21] display a message if timeslot is not available offering other desks that are - first those in the same room
 
     // TODO: [JSSBG-24] add booking to database (only if timeslot is available)
+    checkAvailability().then(
+      (isAvailable) => {
+        console.log(isAvailable);
+        if (isAvailable) {
+          console.log('The timeslot is available for booking.');
+
+            dbRef
+              .orderByChild('location')
+              .equalTo(values.location) 
+              .once('value')
+              .then((snapshot) => {
+                console.log(snapshot.val());
+                if(dbData.timeFrom < dbData.timeTo){
+
+                  // TODO: [JSSBG-22] check if selected date is work day
+                  if(date.getDay() !== 6 && date.getDay() !== 0){
+                      if (snapshot.exists()) {
+                        const matchingDesks = [];
+                
+                        snapshot.forEach((childSnapshot) => {
+                          const deskChild = childSnapshot.val();
+                          // Check if the remaining properties match
+                          if (
+                            deskChild.desk === values.desk && 
+                            deskChild.room === values.room
+                          ) {
+                              matchingDesks.push(childSnapshot.key);
+                          }
+                      });
+              
+                      if (matchingDesks.length > 0) {
+                          const deskId = matchingDesks[0];
+                          const deskRef = dbRef.child(deskId);
+              
+                          const bookingRef = deskRef.child('bookings').push();
+              
+                          bookingRef.set(dbData)
+                            .then(() => {
+                              console.log('Booking document added successfully!');
+                            })
+                            .catch((error) => {
+                              console.error('Error adding booking document:', error);
+                            });
+                        } else {
+                          console.log(1);
+                          console.log('No matching document found.');
+                        }
+              
+                    } else {
+                      console.log(2);
+                      console.log('No matching document found.');
+                    }
+          
+                  }else{
+                    console.log('The date is not week day.');
+                  }
+                }else{
+                  console.log('Selected date is invalid.');
+                }
+
+            })
+            .catch((error) => {
+              console.error('Error querying desks collection:', error);
+            });
+          
+        } else {
+          console.log('The timeslot is not available for booking.');
+          // Handle the case when the timeslot is not available
+        }
+      }
+    ).catch((error) => {
+      console.error('Error checking availability:', error);
+    });
 
     // TODO: [JSSBG-25] clear form
+    document.getElementById("formik-form").reset();
+
 
 };
 
