@@ -9,6 +9,9 @@ const DeskBooking = ({ booking }) => {
                         <strong>Booked By:</strong> {booking.bookedBy}
                     </p>
                     <p>
+                        <strong>Location:</strong> {booking.location}
+                    </p>
+                    <p>
                         <strong>Room:</strong> {booking.room}
                     </p>
                     <p>
