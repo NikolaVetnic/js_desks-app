@@ -28,6 +28,7 @@ Booking (array within `desks`):
 
 ```json
     {
+        "location": string,
         "room": integer,
         "desk": integer,
         "date": Date,

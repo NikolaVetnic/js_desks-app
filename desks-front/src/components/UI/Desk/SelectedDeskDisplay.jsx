@@ -1,11 +1,11 @@
 import AddBookingForm from "./DeskBookings/AddBookingForm";
 import DeskBookingsDisplay from "./DeskBookings/DeskBookingsDisplay";
 
-const SelectedDeskDisplay = (prop) => {
+const SelectedDeskDisplay = ({ location, room, desk, ...rest }) => {
     const city =
-        prop.prop.location === "ns"
+        location === "ns"
             ? "Novi Sad"
-            : prop.prop.location === "md"
+            : location === "md"
             ? "Magdeburg"
             : "Heidelberg";
 
@@ -13,10 +13,10 @@ const SelectedDeskDisplay = (prop) => {
         <div className="container">
             <br />
             <h2>{city}</h2>
-            <h4>Room : {prop.prop.room}</h4>
-            <h4>Desk : {prop.prop.desk}</h4>
+            <h4>Room : {room}</h4>
+            <h4>Desk : {desk}</h4>
             <br />
-            <AddBookingForm />
+            <AddBookingForm location={location} room={room} desk={desk} />
             <br />
             <DeskBookingsDisplay />
         </div>
