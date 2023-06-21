@@ -42,8 +42,8 @@ export const isNotOverlappingWithExistingInterval = (
     existingStart,
     existingEnd
 ) => {
-    const isBefore = inputStart < existingStart && inputEnd <= existingStart; // interval 0 is before interval 1
-    const isAfter = inputStart >= existingEnd && inputEnd > existingEnd; // interval 0 is after interval 1
+    const isBefore = inputEnd <= existingStart; // interval 0 is before interval 1
+    const isAfter = inputStart >= existingEnd; // interval 0 is after interval 1
 
     return isBefore || isAfter;
 };

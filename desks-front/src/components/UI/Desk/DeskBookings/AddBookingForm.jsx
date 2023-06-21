@@ -7,7 +7,6 @@ import {
     generateTimeOptions,
     isNotOverlappingWithExistingInterval,
     isTimeToAfterTimeFrom,
-    parseTime,
 } from "../../../../utils/timeUtils";
 import getDeskFromDb from "../../../../utils/db/getDeskFromDb";
 import verifyToken from "../../../../utils/verifyToken";
