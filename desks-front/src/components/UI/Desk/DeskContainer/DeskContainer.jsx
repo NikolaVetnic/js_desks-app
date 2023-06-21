@@ -81,7 +81,7 @@ const DeskContainer = () => {
                 </div>
             </div>
 
-            {!!selectedDesk && <SelectedDeskDisplay prop={selectedDesk} />}
+            {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk} />}
         </>
     );
 };
