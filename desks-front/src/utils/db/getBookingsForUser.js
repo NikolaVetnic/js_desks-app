@@ -25,12 +25,14 @@ const getBookingsForUser = async (user) => {
                                         location: booking.location,
                                         date: booking.date,
                                         timeFrom: booking.timeFrom,
-                                        timeTo: booking.timeTo };
+                                        timeTo: booking.timeTo,
+                                        bookedBy: booking.bookedBy };
                     matchedBookings.push(bookedDesk);
                 }
         });
         }
     });
+
     return matchedBookings;
 }
 
