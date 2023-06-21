@@ -11,7 +11,7 @@ const desks = [
     { location: "hd", room: 1, desk: 1, addedBy: "admin@admin.com" },
     { location: "ns", room: 1, desk: 1, addedBy: "admin@admin.com" },
     { location: "ns", room: 1, desk: 5, addedBy: "admin@admin.com" },
-    { location: "ns", room: 3, desk: 2, addedBy: "admin@admin.com" },
+    { location: "ns", room: 1, desk: 2, addedBy: "admin@admin.com" },
     { location: "md", room: 1, desk: 5, addedBy: "admin@admin.com" },
     { location: "md", room: 2, desk: 2, addedBy: "admin@admin.com" },
 ];
