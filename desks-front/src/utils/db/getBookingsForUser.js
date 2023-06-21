@@ -33,6 +33,8 @@ const getBookingsForUser = async (user) => {
         }
     });
 
+    matchedBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     return matchedBookings;
 }
 
