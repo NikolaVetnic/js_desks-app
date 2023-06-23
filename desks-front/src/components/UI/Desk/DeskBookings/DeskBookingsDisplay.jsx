@@ -28,7 +28,7 @@ const bookings = [
 
 const DeskBookingsDisplay = ({ booking }) => {
   return (
-    <table className="table">
+    <table className="table table-striped">
       <thead>
         <tr>
           <th>#</th>
