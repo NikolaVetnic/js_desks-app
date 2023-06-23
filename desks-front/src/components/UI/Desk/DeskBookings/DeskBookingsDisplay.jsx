@@ -1,3 +1,5 @@
+import { formatDate } from "../../../../utils/timeUtils"
+
 // TODO: [JSSBG-26] this is just a dummy data - should be replaced with real data from the backend
 const bookings = [
   {
@@ -27,11 +29,6 @@ const bookings = [
 ];
 
 const DeskBookingsDisplay = ({ booking }) => {
-  const formatDate = (dateString) => {
-    const options = { day: "2-digit", month: "short", year: "numeric" };
-    return new Date(dateString).toLocaleDateString("sr-RS", options);
-  };
-
   return (
     <table className="table table-striped">
       <thead>
