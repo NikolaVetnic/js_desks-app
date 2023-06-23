@@ -27,6 +27,11 @@ const bookings = [
 ];
 
 const DeskBookingsDisplay = ({ booking }) => {
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("sr-RS", options);
+  };
+
   return (
     <table className="table table-striped">
       <thead>
@@ -46,7 +51,7 @@ const DeskBookingsDisplay = ({ booking }) => {
             <td>{index + 1}</td>
             <td>{booking.room}</td>
             <td>{booking.desk}</td>
-            <td>{booking.date}</td>
+            <td>{formatDate(booking.date)}</td>
             <td>{booking.timeFrom}</td>
             <td>{booking.timeTo}</td>
             <td>{booking.bookedBy}</td>
