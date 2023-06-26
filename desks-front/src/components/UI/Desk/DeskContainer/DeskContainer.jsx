@@ -41,9 +41,6 @@ const DeskContainer = () => {
     const [selectedDesk, setSelectedDesk] = useState(null);
 
     useEffect(() => {
-        if (selectedDesk !== null) {
-          console.log(selectedDesk);
-        }
         getUserBookings().then((result) => {
             if(result){
               setBookings(result);
@@ -51,7 +48,7 @@ const DeskContainer = () => {
           }).catch((error) => {
             console.log(error);
           });
-      }, [selectedDesk]);
+      }, [bookings]);
       
     const getUserBookings = async () => {
         return getBookingsForUser(verifyToken().username);
