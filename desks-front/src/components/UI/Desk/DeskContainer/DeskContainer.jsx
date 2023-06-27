@@ -5,83 +5,85 @@ import { AvailableTooltip } from "../../Tooltip/Tooltips";
 import DropdownMenu from "../../DropdownMenu";
 import SelectedDeskDisplay from "../SelectedDeskDisplay";
 import getDesksByLocationFromDb from "../../../../utils/db/getDesksByLocationFromDb";
+import { useCallback } from "react";
 
+// TODO: [JSSBG-29] create a config.js file at the root to store the menu options and all such data
 const menuOptions = [
-  { value: "", label: "- choose option -" },
-  { value: "hd", label: "Heidelberg" },
-  { value: "md", label: "Magdeburg" },
-  { value: "ns", label: "Novi Sad" },
+    { value: "", label: "- choose option -" },
+    { value: "hd", label: "Heidelberg" },
+    { value: "md", label: "Magdeburg" },
+    { value: "ns", label: "Novi Sad" },
 ];
 
 const DeskContainer = () => {
-  const [location, setLocation] = useState("");
-  const [desks, setDesks] = useState([]);
-  const [selectedDesk, setSelectedDesk] = useState(null);
+    const [location, setLocation] = useState("");
+    const [desks, setDesks] = useState([]);
+    const [selectedDesk, setSelectedDesk] = useState(null);
 
-  const handleLocationChange = (event) => {
-    setLocation(event.target.value);
-    setSelectedDesk(null);
-    console.log(`Location changed to ${event.target.value}`);
-  };
+    const handleLocationChange = (event) => {
+        setLocation(event.target.value);
+        setSelectedDesk(null);
+        console.log(`Location changed to ${event.target.value}`);
+    };
 
-  useEffect(() => {
-    handleDesks();
-  }, [location]);
+    const handleDesks = useCallback(async () => {
+        try {
+            const result = await getDesksByLocationFromDb(location);
+            const desksData = result || [];
+            setDesks(desksData);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [location]);
 
-  const handleDesks = async () => {
-    // TODO: [JSSBG-28] display real desks from database
-    try {
-      const result = await getDesksByLocationFromDb(location);
-      const desksData = result || [];
-      setDesks(desksData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    useEffect(() => {
+        handleDesks();
+    }, [handleDesks, location]);
 
-  const handleModalOpen = (item) => {
-    setSelectedDesk(item);
-  };
+    const handleModalOpen = (item) => {
+        setSelectedDesk(item);
+    };
 
-  const positionerInstance = (item) => {
+    const positionerInstance = (item) => {
+        return (
+            <ButtonToolbar>
+                <OverlayTrigger placement="top" overlay={AvailableTooltip}>
+                    <Button
+                        onClick={() => handleModalOpen(item)}
+                        variant="success"
+                        className="flexbox-item"
+                    ></Button>
+                </OverlayTrigger>
+            </ButtonToolbar>
+        );
+    };
+
     return (
-      <ButtonToolbar>
-        <OverlayTrigger placement="top" overlay={AvailableTooltip}>
-          <Button
-            onClick={() => handleModalOpen(item)}
-            variant="success"
-            className="flexbox-item"
-          ></Button>
-        </OverlayTrigger>
-      </ButtonToolbar>
-    );
-  };
+        <>
+            <DropdownMenu
+                value={location}
+                options={menuOptions}
+                onChange={handleLocationChange}
+            />
 
-  return (
-    <>
-      <DropdownMenu
-        value={location}
-        options={menuOptions}
-        onChange={handleLocationChange}
-      />
-
-      <div className="flexbox-container mt-3">
-        <div className="rowChild">
-          {location && desks.map((item, index) => {
-            if (location === item.location) {
-              return (
-                <div key={index}>
-                  {positionerInstance(item)}
+            <div className="flexbox-container mt-3">
+                <div className="rowChild">
+                    {location &&
+                        desks.map((item, index) => {
+                            if (location === item.location) {
+                                return (
+                                    <div key={index}>
+                                        {positionerInstance(item)}
+                                    </div>
+                                );
+                            }
+                        })}
                 </div>
-              );
-            }
-          })}
-        </div>
-      </div>
+            </div>
 
-      {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk} />}
-    </>
-  );
+            {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk} />}
+        </>
+    );
 };
 
 export default DeskContainer;
