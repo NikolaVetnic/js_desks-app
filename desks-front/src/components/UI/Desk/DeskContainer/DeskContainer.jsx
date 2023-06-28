@@ -23,7 +23,6 @@ const DeskContainer = () => {
     const handleLocationChange = (event) => {
         setLocation(event.target.value);
         setSelectedDesk(null);
-        console.log(`Location changed to ${event.target.value}`);
     };
 
     const handleDesks = useCallback(async () => {
