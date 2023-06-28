@@ -6,14 +6,10 @@ import DropdownMenu from "../../DropdownMenu";
 import SelectedDeskDisplay from "../SelectedDeskDisplay";
 import getDesksByLocationFromDb from "../../../../utils/db/getDesksByLocationFromDb";
 import { useCallback } from "react";
+import config from "../../../../config";
 
 // TODO: [JSSBG-29] create a config.js file at the root to store the menu options and all such data
-const menuOptions = [
-    { value: "", label: "- choose option -" },
-    { value: "hd", label: "Heidelberg" },
-    { value: "md", label: "Magdeburg" },
-    { value: "ns", label: "Novi Sad" },
-];
+const menuOptions = config.locations;
 
 const DeskContainer = () => {
     const [location, setLocation] = useState("");
