@@ -6,35 +6,25 @@ import firebase from "../../firebase";
  */
 
 const getBookingsForUser = async (user) => {
-    // retrieve all desks
     const dbRef = firebase.database().ref("desks");
-    const matchedBookings = [];
-
     const snapshot = await dbRef.once("value");
-    // iterate through all desks document
+    const matchedBookings = [];
+  
     snapshot.forEach((childSnapshot) => {
-        const bookings = childSnapshot.val().bookings;
-
-        if(bookings){
-            // iterate through all bookings document
-            Object.keys(bookings).forEach((bookingKey) => {
-                const booking = bookings[bookingKey];
-                if(user === booking.bookedBy){
-                    const bookedDesk = {room: booking.room,
-                                        desk: booking.desk,
-                                        location: booking.location,
-                                        date: booking.date,
-                                        timeFrom: booking.timeFrom,
-                                        timeTo: booking.timeTo,
-                                        bookedBy: booking.bookedBy };
-                    matchedBookings.push(bookedDesk);
-                }
-        });
-        }
+      const bookings = childSnapshot.val().bookings;
+  
+      if (bookings) {
+        // filtering bookings for specified user
+        const filteredBookings = Object.values(bookings).filter(
+          (booking) => booking.bookedBy === user
+        );
+  
+        matchedBookings.push(...filteredBookings);
+      }
     });
 
     matchedBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
-
+  
     return matchedBookings;
 }
 
