@@ -57,3 +57,8 @@ export const isTimeToAfterTimeFrom = (timeFrom, timeTo) => {
     const timeToValue = Date.parse(`2000-01-01T${parseTime(timeTo)}`);
     return timeToValue > timeFromValue;
 };
+
+export const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
