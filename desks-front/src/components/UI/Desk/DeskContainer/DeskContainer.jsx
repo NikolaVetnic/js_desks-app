@@ -7,9 +7,13 @@ import DropdownMenu from "../../DropdownMenu";
 import getDesksByLocationFromDb from "../../../../utils/db/getDesksByLocationFromDb";
 import { locations } from "../../../../config";
 import SelectedDeskDisplay from "../SelectedDeskDisplay";
+import getBookingsForUser from "../../../../utils/db/getBookingsForUser";
+import verifyToken from "../../../../utils/verifyToken";
+import UserBookingsDisplay from "../UserBookings/UserBookingsDisplay";
 
 const DeskContainer = () => {
     const [location, setLocation] = useState("");
+    const [bookings, setBookings] = useState(null);
     const [desks, setDesks] = useState([]);
     const [selectedDesk, setSelectedDesk] = useState(null);
 
@@ -29,8 +33,21 @@ const DeskContainer = () => {
     }, [location]);
 
     useEffect(() => {
+        getUserBookings().then((result) => {
+            if(result){
+              setBookings(result);
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
+      }, [bookings]); 
+    const getUserBookings = async () => {
+        return getBookingsForUser(verifyToken().username);
+    };
+
         handleDesks();
     }, [handleDesks, location]);
+
 
     const handleModalOpen = (item) => {
         setSelectedDesk(item);
@@ -49,9 +66,14 @@ const DeskContainer = () => {
             </ButtonToolbar>
         );
     };
+    
+    // TODO: [JSSBG-27] display all booked desks of current logged use
 
     return (
-        <>
+        <>   
+            <strong>Booked by me:</strong>   
+           <UserBookingsDisplay bookings={bookings}/>
+
             <DropdownMenu
                 value={location}
                 options={locations}
