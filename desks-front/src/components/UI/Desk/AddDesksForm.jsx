@@ -27,6 +27,7 @@ const AddDeskForm = () => {
         await newDeskRef.set(deskData);
     };
 
+    // TODO: [JSSBG-30] use config.js for location values
     return (
         <div className="container">
             <h1>Add Desk Form</h1>
