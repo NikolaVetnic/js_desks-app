@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
 import { Button, ButtonToolbar, OverlayTrigger } from "react-bootstrap";
-import "./DeskContainer.css";
+import { useEffect, useState, useCallback } from "react";
+
 import { AvailableTooltip } from "../../Tooltip/Tooltips";
+import "./DeskContainer.css";
 import DropdownMenu from "../../DropdownMenu";
-import SelectedDeskDisplay from "../SelectedDeskDisplay";
 import getDesksByLocationFromDb from "../../../../utils/db/getDesksByLocationFromDb";
-import { useCallback } from "react";
-import config from "../../../../config";
+import { locations } from "../../../../config";
+import SelectedDeskDisplay from "../SelectedDeskDisplay";
 
 const DeskContainer = () => {
     const [location, setLocation] = useState("");
@@ -54,7 +54,7 @@ const DeskContainer = () => {
         <>
             <DropdownMenu
                 value={location}
-                options={config.locations}
+                options={locations}
                 onChange={handleLocationChange}
             />
 
