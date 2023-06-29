@@ -2,10 +2,10 @@ import firebase from "../../firebase";
 
 /**
  * Calculates the sum of two numbers.
- * @param {string} location - office location taken from array ["hd", "md", "ns"]
- * @param {number} room - the room number, e.g. 1, 2, 3, ...
- * @param {number} desk - the desk number, e.g. 1, 2, 3, ...
- * @returns {Object} the desk from the database
+ * @param {string} location - Office location taken from array ["hd", "md", "ns"]
+ * @param {number} room - The room number, e.g. 1, 2, 3, ...
+ * @param {number} desk - The desk number, e.g. 1, 2, 3, ...
+ * @returns {Object} - The desk from the database
  */
 const getDeskFromDb = async (location, room, desk) => {
     const dbRef = firebase.database().ref("desks");
