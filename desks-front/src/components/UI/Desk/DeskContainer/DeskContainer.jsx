@@ -31,22 +31,23 @@ const DeskContainer = () => {
             console.log(error);
         }
     }, [location]);
+  
 
-    useEffect(() => {
-        getUserBookings().then((result) => {
-            if(result){
-              setBookings(result);
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
-      }, [bookings]); 
     const getUserBookings = async () => {
         return getBookingsForUser(verifyToken().username);
     };
 
+    useEffect(() => {
         handleDesks();
-    }, [handleDesks, location]);
+    }, [ handleDesks ]);
+
+    getUserBookings().then((result) => {
+        if(result){
+          setBookings(result);
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
 
 
     const handleModalOpen = (item) => {
