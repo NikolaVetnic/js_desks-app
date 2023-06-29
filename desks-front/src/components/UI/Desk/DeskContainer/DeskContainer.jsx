@@ -8,9 +8,6 @@ import getDesksByLocationFromDb from "../../../../utils/db/getDesksByLocationFro
 import { useCallback } from "react";
 import config from "../../../../config";
 
-// TODO: [JSSBG-29] create a config.js file at the root to store the menu options and all such data
-const menuOptions = config.locations;
-
 const DeskContainer = () => {
     const [location, setLocation] = useState("");
     const [desks, setDesks] = useState([]);
@@ -57,7 +54,7 @@ const DeskContainer = () => {
         <>
             <DropdownMenu
                 value={location}
-                options={menuOptions}
+                options={config.locations}
                 onChange={handleLocationChange}
             />
 
