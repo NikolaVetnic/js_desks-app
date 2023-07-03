@@ -4,6 +4,14 @@ import firebase from '../../firebase';
 const dbRef = firebase.database().ref("desks");
 
 // Function to check for available time slots
+/**
+ * Checks the db if there are available time slots.
+ * @param {string} location - Office location taken from array ["hd", "md", "ns"]
+ * @param {number} room - The room number, e.g. 1, 2, 3, ...
+ * @param {number} desk - The desk number, e.g. 1, 2, 3, ...
+ * @param {string} selectedDate - Selected date from the form
+ * @returns {boolean} - Availability of the desk
+ */
 const checkDeskAvailability = async (location, room, desk, selectedDate) => {
   const freeSlots = []; // Array to store free time slots
 
