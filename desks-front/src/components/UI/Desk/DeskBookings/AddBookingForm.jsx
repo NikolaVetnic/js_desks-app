@@ -1,4 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
@@ -10,6 +11,8 @@ import {
 } from "../../../../utils/timeUtils";
 import getDeskFromDb from "../../../../utils/db/getDeskFromDb";
 import verifyToken from "../../../../utils/verifyToken";
+import checkDeskAvailability from "../../../../utils/db/checkDeskAvailability";
+
 
 const validationSchema = Yup.object().shape({
     date: Yup.date()
@@ -31,12 +34,7 @@ const AddBookingForm = ({ location, room, desk }) => {
     const navigate = useNavigate();
 
     const username = verifyToken().username;
-
-    // if user is not logged in the username will be undefined, redirect to login page
-    if (!username) {
-        navigate("/login");
-        return;
-    }
+    const [isAvailable, setIsAvailable] = useState(false);
 
     const initialValues = {
         location,
@@ -47,6 +45,106 @@ const AddBookingForm = ({ location, room, desk }) => {
         timeTo: "",
         bookedBy: verifyToken().username,
     };
+
+    // TODO: [JSSBG-18] only display form if there are time slots available during the day
+    const checkAvailability = useCallback(async () => {
+        const availability = await checkDeskAvailability(
+            location,
+            room,
+            desk,
+            Yup.date()
+        );
+        setIsAvailable(availability);
+    },[setIsAvailable, location, room, desk]);
+
+    const handleDateChange = useCallback(async (selectedDate) => {
+        // Check availability when the selected date changes
+        if (!selectedDate) {
+            setIsAvailable(false);
+            return;
+        }
+
+        const filteredDesks = await getDeskFromDb(location, room, desk);
+
+        const isAvailable = !filteredDesks.bookings
+            ? true
+            : !Object.values(filteredDesks.bookings).some((booking) => {
+                  return booking.date === selectedDate;
+              });
+
+        setIsAvailable(isAvailable);
+    }, [desk, location, room]);
+
+
+    useEffect(() => {
+        handleDateChange(initialValues.date);
+      checkAvailability();
+  },[checkAvailability, handleDateChange, initialValues.date]);
+
+  const displayTimeListbox = () => {
+    if(isAvailable){
+        return (
+            <div>
+                <div className="form-group">
+                    <div className="row">
+                        <div className="col">
+                            <label htmlFor="timeFrom">Time From:</label>
+                            <Field
+                                as="select"
+                                id="timeFrom"
+                                name="timeFrom"
+                                className="form-control"
+                            >
+                                <option value="">
+                                    - Select Time From -
+                                </option>
+                                {generateTimeOptions()}
+                            </Field>
+                            <ErrorMessage
+                                name="timeFrom"
+                                component="div"
+                                className="text-danger"
+                            />
+                        </div>
+                        <div className="col">
+                            <label htmlFor="timeTo">Time To:</label>
+                            <Field
+                                as="select"
+                                id="timeTo"
+                                name="timeTo"
+                                className="form-control"
+                            >
+                                <option value="">- Select Time To -</option>
+                                {generateTimeOptions()}
+                            </Field>
+                            <ErrorMessage
+                                name="timeTo"
+                                component="div"
+                                className="text-danger"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" className="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        );
+    }else{
+        return (
+            <strong>There are no available time slots for the selected date please choose another date.</strong>
+        )
+    }
+  }
+
+  //---------------------------------------------
+
+    // if user is not logged in the username will be undefined, redirect to login page
+    if (!username) {
+        navigate("/login");
+        return;
+    }
 
     const handleSubmit = async ({ date, timeFrom, timeTo }) => {
         const dataToSave = { ...initialValues, date, timeFrom, timeTo };
@@ -74,6 +172,8 @@ const AddBookingForm = ({ location, room, desk }) => {
         addBookingToDesk(filteredDesks.key, dataToSave);
     };
 
+
+
     return (
         <div>
             <h1>Add Booking Form</h1>
@@ -82,67 +182,30 @@ const AddBookingForm = ({ location, room, desk }) => {
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
-                <Form>
-                    <div className="form-group">
-                        <label htmlFor="date">Date:</label>
-                        <Field
-                            type="date"
-                            id="date"
-                            name="date"
-                            className="form-control"
-                        />
-                        <ErrorMessage
-                            name="date"
-                            component="div"
-                            className="text-danger"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <div className="row">
-                            <div className="col">
-                                <label htmlFor="timeFrom">Time From:</label>
-                                <Field
-                                    as="select"
-                                    id="timeFrom"
-                                    name="timeFrom"
-                                    className="form-control"
-                                >
-                                    <option value="">
-                                        - Select Time From -
-                                    </option>
-                                    {generateTimeOptions()}
-                                </Field>
-                                <ErrorMessage
-                                    name="timeFrom"
-                                    component="div"
-                                    className="text-danger"
-                                />
-                            </div>
-                            <div className="col">
-                                <label htmlFor="timeTo">Time To:</label>
-                                <Field
-                                    as="select"
-                                    id="timeTo"
-                                    name="timeTo"
-                                    className="form-control"
-                                >
-                                    <option value="">- Select Time To -</option>
-                                    {generateTimeOptions()}
-                                </Field>
-                                <ErrorMessage
-                                    name="timeTo"
-                                    component="div"
-                                    className="text-danger"
-                                />
-                            </div>
+                {({ setFieldValue }) => (
+                    <Form>
+                        <div className="form-group">
+                            <label htmlFor="date">Date:</label>
+                            <Field
+                                type="date"
+                                id="date"
+                                name="date"
+                                className="form-control"
+                                onChange={(e) => {
+                                    setFieldValue("date", e.target.value);
+                                    handleDateChange(e.target.value);
+                                }}
+                            />
+                            <ErrorMessage
+                                name="date"
+                                component="div"
+                                className="text-danger"
+                            />
                         </div>
-                    </div>
 
-                    <button type="submit" className="btn btn-primary">
-                        Submit
-                    </button>
-                </Form>
+                        {displayTimeListbox()}
+                    </Form>
+                )}
             </Formik>
         </div>
     );
