@@ -1,13 +1,20 @@
+import { useState, useEffect } from "react";
 import BookingsTableView from "./BookingsTableView";
-import { getBookings } from "../../../../utils/db/getBookingsForDesk";
+import { getDeskBookings } from "../../../../utils/db/getDeskBookingsk";
 
-// TODO: [JSSBG-26] this is just a dummy data - should be replaced with real data from the backend
-const bookings =await getBookings();
+const DeskBookingsDisplay = ({ room, desk }) => {
+  const [bookings, setBookings] = useState([]);
 
-const DeskBookingsDisplay = () => {
-  return (
-    <BookingsTableView bookings={bookings} />
-  );
+  useEffect(() => {
+    const fetchBookings = async () => {
+      const bookingsData = await getDeskBookings(room, desk);
+      setBookings(bookingsData);
+    };
+
+    fetchBookings();
+  }, [room, desk]);
+
+  return <BookingsTableView bookings={bookings} />;
 };
 
 export default DeskBookingsDisplay;
