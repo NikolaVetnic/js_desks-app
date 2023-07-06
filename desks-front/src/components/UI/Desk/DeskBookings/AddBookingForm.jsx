@@ -35,6 +35,7 @@ const AddBookingForm = ({ location, room, desk }) => {
 
     const username = verifyToken().username;
     const [isAvailable, setIsAvailable] = useState(false);
+    const [selectedDate, setSelectedDate] = useState("");
 
     const initialValues = {
         location,
@@ -48,95 +49,82 @@ const AddBookingForm = ({ location, room, desk }) => {
 
     // TODO: [JSSBG-18] only display form if there are time slots available during the day
     const checkAvailability = useCallback(async () => {
-        const availability = await checkDeskAvailability(
-            location,
-            room,
-            desk,
-            Yup.date()
-        );
-        setIsAvailable(availability);
-    },[setIsAvailable, location, room, desk]);
-
-    const handleDateChange = useCallback(async (selectedDate) => {
-        // Check availability when the selected date changes
-        if (!selectedDate) {
-            setIsAvailable(false);
-            return;
+        if(selectedDate !== "") {
+            const availability = await checkDeskAvailability(
+                location,
+                room,
+                desk,
+                selectedDate
+              );
+              setIsAvailable(availability);
         }
-
-        const filteredDesks = await getDeskFromDb(location, room, desk);
-
-        const isAvailable = !filteredDesks.bookings
-            ? true
-            : !Object.values(filteredDesks.bookings).some((booking) => {
-                  return booking.date === selectedDate;
-              });
-
-        setIsAvailable(isAvailable);
-    }, [desk, location, room]);
-
-
-    useEffect(() => {
+    }, [setIsAvailable, location, room, desk,selectedDate]);
+      
+      const handleDateChange = useCallback((date) => {
+        setSelectedDate(date);
+      },[]);
+      
+      useEffect(() => {
         handleDateChange(initialValues.date);
-      checkAvailability();
-  },[checkAvailability, handleDateChange, initialValues.date]);
-
-  const displayTimeListbox = () => {
-    if(isAvailable){
-        return (
+        checkAvailability();
+      }, [checkAvailability, handleDateChange, initialValues.date]);
+      
+      const displayTimeListbox = () => {
+        if (isAvailable) {
+          return (
             <div>
-                <div className="form-group">
-                    <div className="row">
-                        <div className="col">
-                            <label htmlFor="timeFrom">Time From:</label>
-                            <Field
-                                as="select"
-                                id="timeFrom"
-                                name="timeFrom"
-                                className="form-control"
-                            >
-                                <option value="">
-                                    - Select Time From -
-                                </option>
-                                {generateTimeOptions()}
-                            </Field>
-                            <ErrorMessage
-                                name="timeFrom"
-                                component="div"
-                                className="text-danger"
-                            />
-                        </div>
-                        <div className="col">
-                            <label htmlFor="timeTo">Time To:</label>
-                            <Field
-                                as="select"
-                                id="timeTo"
-                                name="timeTo"
-                                className="form-control"
-                            >
-                                <option value="">- Select Time To -</option>
-                                {generateTimeOptions()}
-                            </Field>
-                            <ErrorMessage
-                                name="timeTo"
-                                component="div"
-                                className="text-danger"
-                            />
-                        </div>
-                    </div>
+              <div className="form-group">
+                <div className="row">
+                  <div className="col">
+                    <label htmlFor="timeFrom">Time From:</label>
+                    <Field
+                      as="select"
+                      id="timeFrom"
+                      name="timeFrom"
+                      className="form-control"
+                    >
+                      <option value="">- Select Time From -</option>
+                      {generateTimeOptions(true)}
+                    </Field>
+                    <ErrorMessage
+                      name="timeFrom"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="col">
+                    <label htmlFor="timeTo">Time To:</label>
+                    <Field
+                      as="select"
+                      id="timeTo"
+                      name="timeTo"
+                      className="form-control"
+                    >
+                      <option value="">- Select Time To -</option>
+                      {generateTimeOptions(false)}
+                    </Field>
+                    <ErrorMessage
+                      name="timeTo"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
                 </div>
-
-                <button type="submit" className="btn btn-primary">
-                    Submit
-                </button>
+              </div>
+      
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
             </div>
-        );
-    }else{
-        return (
-            <strong>There are no available time slots for the selected date please choose another date.</strong>
-        )
-    }
-  }
+          );
+        } else {
+          return (
+            <strong>
+              There are no available time slots for the selected date. Please choose another date.
+            </strong>
+          );
+        }
+      };
 
   //---------------------------------------------
 
