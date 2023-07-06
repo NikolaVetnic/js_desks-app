@@ -25,8 +25,6 @@ const checkDeskAvailability = async (location, room, desk, selectedDate) => {
     arrayOfTimeIndexes[i] = false;
   }
 
-  console.log(arrayOfTimeIndexes);
-
   if (desks) {
     const filteredDesks = Object.values(desks).filter(
       (deskItem) =>
@@ -42,8 +40,6 @@ const checkDeskAvailability = async (location, room, desk, selectedDate) => {
         (booking) => 
           booking.date === selectedDate   
       );
-
-      console.log(filteredBookings);
 
       for (const booking of filteredBookings) {
 
