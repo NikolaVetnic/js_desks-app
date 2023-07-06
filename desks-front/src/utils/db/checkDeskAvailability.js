@@ -1,5 +1,7 @@
 import firebase from '../../firebase';
 
+import { transformTime } from '../timeUtils';
+
 // Reference to the Firebase database
 const dbRef = firebase.database().ref("desks");
 
@@ -13,14 +15,19 @@ const dbRef = firebase.database().ref("desks");
  * @returns {boolean} - Availability of the desk
  */
 const checkDeskAvailability = async (location, room, desk, selectedDate) => {
-  const freeSlots = []; // Array to store free time slots
-
-  // Retrieve the bookings for the given date from the database
   const snapshot = await dbRef.once("value");
   const desks = snapshot.val();
 
+  //from 8:00am till 17:00pm
+  var arrayOfTimeIndexes = [];
+
+  for(let i = 0; i < 36; i++){
+    arrayOfTimeIndexes[i] = false;
+  }
+
+  console.log(arrayOfTimeIndexes);
+
   if (desks) {
-    // Filter the desks based on the provided location, room, and desk number
     const filteredDesks = Object.values(desks).filter(
       (deskItem) =>
         deskItem.location === location &&
@@ -28,52 +35,35 @@ const checkDeskAvailability = async (location, room, desk, selectedDate) => {
         deskItem.desk === desk
     );
 
-    if (filteredDesks.length > 0) {
-      const bookings = filteredDesks[0].bookings;
+    const bookings = filteredDesks?.[0]?.bookings;
 
-      if (bookings) {
-        // Filter the bookings for the selected date
-        const filteredBookings = Object.values(bookings).filter(
-          (booking) => booking.date === selectedDate
-        );
+    if (bookings) {
+      const filteredBookings = Object.values(bookings).filter(
+        (booking) => 
+          booking.date === selectedDate   
+      );
 
-        // Sort the bookings based on the start time
-        const sortedBookings = filteredBookings.sort(function (a, b) {
-          return a.timeFrom.localeCompare(b.timeFrom);
-        });
+      console.log(filteredBookings);
 
-        const startTime = "08:00 AM"; // Start time of the working day
+      for (const booking of filteredBookings) {
 
-        for (let i = 0; i < sortedBookings.length; i++) {
-          const booking = sortedBookings[i];
-          const endTime = booking.timeFrom;
+        const [idx0,idx1] = transformTime(booking.timeFrom,booking.timeTo);
 
-          // Check if there is an available time slot between the current booking and the next one
-          if (endTime !== startTime) {
-            freeSlots.push({ timeFrom: startTime, timeTo: endTime });
-          }
-
-          startTime = booking.timeTo; // Update the start time to the end time of the current booking
+        for(let i = idx0; i <= idx1; i++){
+          arrayOfTimeIndexes[i] = true;
         }
+      }
+      
 
-        const endTime = "05:00 PM"; // End time of the working day
-
-        // Check if there is an available time slot after the last booking
-        if (endTime !== startTime) {
-          freeSlots.push({ timeFrom: startTime, timeTo: endTime });
+      for(let i=0; i<arrayOfTimeIndexes.length; i++){
+        if(arrayOfTimeIndexes[i] === false){
+          return true;
         }
-      } else {
-        // No bookings for the selected date, the whole day is available
-        freeSlots.push({ timeFrom: "08:00 AM", timeTo: "05:00 PM" });
       }
     }
   }
 
-  // Log the free time slots
-  console.log(freeSlots);
-
-  // Return true if there is an available time slot, false otherwise
-  return freeSlots.length > 0;
+  return false; 
 };
 
 export default checkDeskAvailability;
