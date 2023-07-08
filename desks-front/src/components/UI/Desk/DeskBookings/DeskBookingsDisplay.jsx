@@ -1,38 +1,20 @@
-import { formatDate } from "../../../../utils/timeUtils";
+import { useState, useEffect } from "react";
 import BookingsTableView from "./BookingsTableView";
+import { getDeskBookings } from "../../../../utils/db/getDeskBookingsk";
 
-// TODO: [JSSBG-26] this is just a dummy data - should be replaced with real data from the backend
-const bookings = [
-  {
-    room: 1,
-    desk: 2,
-    date: "2022-05-25",
-    timeFrom: "09:00",
-    timeTo: "12:00",
-    bookedBy: "user@example.com",
-  },
-  {
-    room: 3,
-    desk: 4,
-    date: "2022-06-25",
-    timeFrom: "10:00",
-    timeTo: "13:00",
-    bookedBy: "example@user.com",
-  },
-  {
-    room: 3,
-    desk: 4,
-    date: "2022-06-25",
-    timeFrom: "13:00",
-    timeTo: "13:30",
-    bookedBy: "example@user.com",
-  },
-];
+const DeskBookingsDisplay = ({ room, desk }) => {
+  const [bookings, setBookings] = useState([]);
 
-const DeskBookingsDisplay = () => {
-  return (
-    <BookingsTableView bookings={bookings} />
-  );
+  useEffect(() => {
+    const fetchBookings = async () => {
+      const bookingsData = await getDeskBookings(room, desk);
+      setBookings(bookingsData);
+    };
+
+    fetchBookings();
+  }, [room, desk]);
+
+  return <BookingsTableView bookings={bookings} />;
 };
 
 export default DeskBookingsDisplay;
