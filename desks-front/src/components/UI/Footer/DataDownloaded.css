@@ -1,0 +1,20 @@
+.data-downloaded {
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.data-downloaded-green {
+    color: black;
+    background-color: green;
+}
+
+.data-downloaded-yellow {
+    color: black;
+    background-color: yellow;
+}
+
+.data-downloaded-red {
+    color: black;
+    background-color: red;
+}
