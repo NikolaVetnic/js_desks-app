@@ -1,4 +1,4 @@
-export const generateTimeOptions = () => {
+export const generateTimeOptions = (isTimeFrom) => {
     const options = [];
     const minuteInterval = 15;
 
@@ -7,18 +7,33 @@ export const generateTimeOptions = () => {
 
     while (
         time.getHours() < process.env.REACT_APP_WORK_HOURS_TO ||
-        (time.getHours() === process.env.REACT_APP_WORK_HOURS_TO &&
+        (time.getHours() === parseInt(process.env.REACT_APP_WORK_HOURS_TO) &&
             time.getMinutes() === 0)
     ) {
         const formattedTime = time.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
         });
-        options.push(
-            <option value={formattedTime} key={formattedTime}>
-                {formattedTime}
-            </option>
-        );
+
+        if (isTimeFrom && time.getHours() === 17 && time.getMinutes() === 0) {
+            options.push(
+                <option value={formattedTime} key={formattedTime} disabled>
+                    {formattedTime}
+                </option>
+            );
+        } else if (!isTimeFrom && time.getHours() === 8 && time.getMinutes() === 0) {
+            options.push(
+                <option value={formattedTime} key={formattedTime} disabled>
+                    {formattedTime}
+                </option>
+            );
+        } else {
+            options.push(
+                <option value={formattedTime} key={formattedTime}>
+                    {formattedTime}
+                </option>
+            );
+        }
         time.setMinutes(time.getMinutes() + minuteInterval);
     }
 
@@ -61,4 +76,46 @@ export const isTimeToAfterTimeFrom = (timeFrom, timeTo) => {
 export const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "short", year: "numeric" };
     return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
+
+  export const transformTime = (timeFrom, timeTo) => {
+    const [hourF, minuteF, atF] = timeFrom.split(/:|\s/);
+    const [hourT, minuteT, atT] = timeTo.split(/:|\s/);
+  
+    const timeFromInt = parseToInteger(hourF, minuteF);
+    const timeToInt = parseToInteger(hourT, minuteT);
+  
+    const idx0 = calculateIndex(timeFromInt.hourR, timeFromInt.minR, atF);
+    const idx1 = calculateIndex(timeToInt.hourR, timeToInt.minR, atT);
+    
+    return [idx0, idx1];
+  };
+
+  const convertTimeTo24HourFormat = (hour, minute, at) => {
+    const parsedTime = parseToInteger(hour,minute);
+  
+    if (at === 'PM' && parsedTime.hourR < 12) {
+        parsedTime.hourR += 12;
+    }
+  
+    if (at === 'AM' && parsedTime.hourR === 12) {
+        parsedTime.hourR = 0;
+    }
+
+    return { hourR: parsedTime.hourR, minR: parsedTime.minR };
+  };
+  
+  const calculateIndex = (hour, minute, at) => {
+    const convertedTime = convertTimeTo24HourFormat(hour, minute, at);
+  
+    var minuteR = convertedTime.minR / 15;
+  
+    return (convertedTime.hourR - 8) * 4 + minuteR;
+  };
+  
+  const parseToInteger = (hour, minute) => {
+    var hourR = parseInt(hour, 10);
+    var minR = parseInt(minute, 10);
+  
+    return { hourR, minR };
   };
