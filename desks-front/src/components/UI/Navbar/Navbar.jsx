@@ -14,6 +14,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         Cookies.remove("token");
+        localStorage.setItem("totalDownloaded", 0);
         navigate("/login");
     };
 

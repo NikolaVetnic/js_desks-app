@@ -57,6 +57,7 @@ const Login = () => {
                     role: userRecord[keys[0]].role,
                 };
                 Cookies.set("token", generateJWT(payload));
+                localStorage.setItem("totalDownloaded", 0);
                 navigate("/dashboard");
             } else {
                 console.log("wrong password");
