@@ -1,4 +1,5 @@
 import firebase from "../../firebase";
+import updateTotalDownloaded from "./updateTotalDownloaded";
 
 /**
  * Gets all reserved bookings for logged user.
@@ -25,6 +26,9 @@ const getBookingsForUser = async (user) => {
     });
 
     matchedBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // use this in every function that fetches data from the database
+    updateTotalDownloaded(matchedBookings);
 
     return matchedBookings;
 };

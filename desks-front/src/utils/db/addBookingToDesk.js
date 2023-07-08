@@ -1,4 +1,5 @@
 import firebase from "../../firebase";
+import updateTotalDownloaded from "./updateTotalDownloaded";
 
 /**
  * Calculates the sum of two numbers.
@@ -11,6 +12,9 @@ const addBookingToDesk = async (deskId, bookingData) => {
     try {
         // retrieve the desk entity from Firebase
         const deskRef = db.ref(`desks/${deskId}`);
+
+        // use this in every function that fetches data from the database
+        updateTotalDownloaded(deskRef);
 
         // add the new booking to the "bookings" array with Firebase-generated key
         const newBookingRef = deskRef.child("bookings").push();

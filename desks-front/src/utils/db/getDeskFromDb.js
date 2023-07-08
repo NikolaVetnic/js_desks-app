@@ -1,4 +1,5 @@
 import firebase from "../../firebase";
+import updateTotalDownloaded from "./updateTotalDownloaded";
 
 /**
  * Calculates the sum of two numbers.
@@ -14,7 +15,11 @@ const getDeskFromDb = async (location, room, desk) => {
         .orderByChild("location")
         .equalTo(location)
         .once("value");
+
     const desks = snapshot.val();
+
+    // use this in every function that fetches data from the database
+    updateTotalDownloaded(desks);
 
     const requiredDesk = Object.entries(desks).find(([key, curr]) => {
         return curr.room === room && curr.desk === desk;
