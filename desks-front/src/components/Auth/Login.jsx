@@ -7,9 +7,10 @@ import { Button } from "react-bootstrap";
 
 import generateJWT from "../../utils/generateJWT";
 import getUserByUsername from "../../utils/getUserByUsername";
+import OverlayModal from "../UI/OverlayModal/OverlayModal";
 import PasswordInput from "../UI/PasswordInput";
 import TextInput from "../UI/TextInput";
-import OverlayModal from "../UI/OverlayModal/OverlayModal";
+import updateTotalDownloaded from "../../utils/db/updateTotalDownloaded";
 
 const bcrypt = require("bcryptjs");
 
@@ -39,6 +40,9 @@ const Login = () => {
                 });
                 return;
             }
+
+            // use this in every function that fetches data from the database
+            updateTotalDownloaded(userRecord);
 
             // access retreived password hash value
             const keys = Object.keys(userRecord);
