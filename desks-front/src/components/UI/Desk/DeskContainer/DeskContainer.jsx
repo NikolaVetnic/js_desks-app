@@ -33,21 +33,22 @@ const DeskContainer = () => {
     }, [location]);
   
 
-    const getUserBookings = async () => {
+    const getUserBookings = useCallback(async () => {
         return getBookingsForUser(verifyToken().username);
-    };
+    },[]);
 
     useEffect(() => {
-        handleDesks();
-    }, [ handleDesks ]);
+        
+        getUserBookings().then((result) => {
+            if(result){
+              setBookings(result);
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
 
-    getUserBookings().then((result) => {
-        if(result){
-          setBookings(result);
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
+        handleDesks();
+    }, [ handleDesks, getUserBookings]);
 
 
     const handleModalOpen = (item) => {
