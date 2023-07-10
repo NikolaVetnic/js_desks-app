@@ -150,7 +150,7 @@ const AddBookingForm = ({ location, room, desk }) => {
               })
             : false;
 
-        if (isOverlapping) {
+        if (!isOverlapping) {
             console.log(
                 "one of the user's bookings is overlapping with the new booking"
             );
