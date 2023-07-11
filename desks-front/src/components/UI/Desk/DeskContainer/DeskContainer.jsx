@@ -31,24 +31,21 @@ const DeskContainer = () => {
             console.log(error);
         }
     }, [location]);
-  
 
-    const getUserBookings = useCallback(async () => {
-        return getBookingsForUser(verifyToken().username);
-    },[]);
+    const handleBookingAdded = useCallback(async () => {
+        try{
+            const updatedBookings = await getBookingsForUser(verifyToken().username);
+            setBookings(updatedBookings);
+        }catch (error) {
+            console.log(error);
+        }
+    }, []);
 
     useEffect(() => {
+        handleBookingAdded()
         
-        getUserBookings().then((result) => {
-            if(result){
-              setBookings(result);
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
-
         handleDesks();
-    }, [ handleDesks, getUserBookings]);
+    }, [ handleDesks, handleBookingAdded ]);
 
 
     const handleModalOpen = (item) => {
@@ -97,7 +94,7 @@ const DeskContainer = () => {
                 </div>
             </div>
 
-            {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk} />}
+            {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk}  onBookingAdded={handleBookingAdded}/>}
         </>
     );
 };

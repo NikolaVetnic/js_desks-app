@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
         }),
 });
 
-const AddBookingForm = ({ location, room, desk }) => {
+const AddBookingForm = ({ location, room, desk, setBookings}) => {
     const navigate = useNavigate();
 
     const username = verifyToken().username;
@@ -141,16 +141,25 @@ const AddBookingForm = ({ location, room, desk }) => {
 
         const isOverlapping = filteredDesks.bookings
             ? Object.values(filteredDesks.bookings).some((booking) => {
-                  return !isNotOverlappingWithExistingInterval(
+                
+                var inputDate = new Date(date);
+                var bookingDate = new Date(booking.date);
+
+                if(inputDate.getDay() === bookingDate.getDay() 
+                    && inputDate.getMonth() === bookingDate.getMonth()
+                    && inputDate.getFullYear() === bookingDate.getFullYear()){
+                      return !isNotOverlappingWithExistingInterval(
                       timeFrom,
                       timeTo,
                       booking.timeFrom,
                       booking.timeTo
-                  );
+                    );
+                  }
               })
+
             : false;
 
-        if (!isOverlapping) {
+        if (isOverlapping) {
             console.log(
                 "one of the user's bookings is overlapping with the new booking"
             );
@@ -158,6 +167,7 @@ const AddBookingForm = ({ location, room, desk }) => {
         }
 
         addBookingToDesk(filteredDesks.key, dataToSave);
+        setBookings();
     };
 
 
