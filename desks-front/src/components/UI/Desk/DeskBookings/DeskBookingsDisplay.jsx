@@ -12,7 +12,7 @@ const DeskBookingsDisplay = ({ room, desk }) => {
     };
 
     fetchBookings();
-  }, [room, desk]);
+  }, [room, desk, bookings]);
 
   return <BookingsTableView bookings={bookings} />;
 };
