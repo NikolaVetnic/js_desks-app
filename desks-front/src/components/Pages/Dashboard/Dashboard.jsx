@@ -1,6 +1,6 @@
 import verifyToken from "../../../utils/verifyToken";
 import AdminDashboard from "./AdminDashboard";
-import UserDashboard from "./UserDashboard";
+import UserDashboard from "./UserDashboard/UserDashboard";
 
 const Dashboard = () => {
     const { username, role } = verifyToken();
