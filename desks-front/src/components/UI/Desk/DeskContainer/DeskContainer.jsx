@@ -3,17 +3,13 @@ import { useEffect, useState, useCallback } from "react";
 
 import { AvailableTooltip } from "../../Tooltip/Tooltips";
 import "./DeskContainer.css";
-import BookingsTableView from "../DeskBookings/BookingsTableView";
 import DropdownMenu from "../../DropdownMenu";
 import getDesksByLocationFromDb from "../../../../utils/db/getDesksByLocationFromDb";
 import { locations } from "../../../../config";
 import SelectedDeskDisplay from "../SelectedDeskDisplay";
-import getBookingsForUser from "../../../../utils/db/getBookingsForUser";
-import verifyToken from "../../../../utils/verifyToken";
 
 const DeskContainer = () => {
     const [location, setLocation] = useState("");
-    const [bookings, setBookings] = useState(null);
     const [desks, setDesks] = useState([]);
     const [selectedDesk, setSelectedDesk] = useState(null);
 
@@ -32,20 +28,10 @@ const DeskContainer = () => {
         }
     }, [location]);
 
-    const handleBookingAdded = useCallback(async () => {
-        try{
-            const updatedBookings = await getBookingsForUser(verifyToken().username);
-            setBookings(updatedBookings);
-        }catch (error) {
-            console.log(error);
-        }
-    }, []);
-
     useEffect(() => {
-        handleBookingAdded()
         
         handleDesks();
-    }, [ handleDesks, handleBookingAdded ]);
+    }, [ handleDesks ]);
 
 
     const handleModalOpen = (item) => {
@@ -70,8 +56,6 @@ const DeskContainer = () => {
 
     return (
         <>   
-            <strong>Booked by me:</strong>   
-           <BookingsTableView bookings={bookings}/>
 
             <DropdownMenu
                 value={location}
@@ -94,7 +78,7 @@ const DeskContainer = () => {
                 </div>
             </div>
 
-            {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk}  onBookingAdded={handleBookingAdded}/>}
+            {!!selectedDesk && <SelectedDeskDisplay {...selectedDesk}  />}
         </>
     );
 };
