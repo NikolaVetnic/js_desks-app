@@ -22,9 +22,6 @@ export const UserBookings = () => {
     }, [ handleBookingAdded ]);
 
     return (
-        <>
-            <p>Booked by me:</p>
-            <BookingsTableView bookings={bookings}/>
-        </>
+        <BookingsTableView bookings={bookings}/>
     )
 }
