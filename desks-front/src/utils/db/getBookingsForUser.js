@@ -25,7 +25,7 @@ const getBookingsForUser = async (user) => {
         }
     });
 
-    matchedBookings.sort((a, b) => new Date(a.date) - new Date(b.date));
+    matchedBookings.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // use this in every function that fetches data from the database
     updateTotalDownloaded(matchedBookings);
