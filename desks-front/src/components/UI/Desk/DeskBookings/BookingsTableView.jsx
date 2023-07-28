@@ -76,9 +76,9 @@ const BookingsTableView = ({ bookings }) => {
                     {
                         numbers.map((n, i) => {
                             return (
-                            <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
-                                <button  className="page-link" onClick={() => changeCurrPage(n)}>{n}</button>
-                            </li>
+                                <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
+                                    <button  className="page-link" onClick={() => changeCurrPage(n)}>{n}</button>
+                                </li>
                             )
                         })
                     }
