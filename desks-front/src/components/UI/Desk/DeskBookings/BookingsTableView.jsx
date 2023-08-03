@@ -75,7 +75,7 @@ const BookingsTableView = ({ bookings }) => {
                     </li>
                     {
                         numbers.map((n, i) => {
-                            if(i === 4 && n.length > 7){
+                            if(i === 4 && numbers.length > 7){
                                 i = n.length-3;
                                 return(
                                     <li>
