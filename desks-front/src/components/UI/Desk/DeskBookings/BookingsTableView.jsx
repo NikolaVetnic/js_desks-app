@@ -22,7 +22,7 @@ const BookingsTableView = ({ bookings }) => {
         return <p>No bookings</p>;
     }
 
-    const recordsPerPage = 3;
+    const recordsPerPage = 10;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
     //records for every page
@@ -75,11 +75,20 @@ const BookingsTableView = ({ bookings }) => {
                     </li>
                     {
                         numbers.map((n, i) => {
-                            return (
-                                <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
-                                    <button  className="page-link" onClick={() => changeCurrPage(n)}>{n}</button>
-                                </li>
-                            )
+                            if(i === 4 && n.length > 7){
+                                i = n.length-3;
+                                return(
+                                    <li>
+                                        <button>...</button>
+                                    </li>
+                                )
+                            }else{
+                                return (
+                                    <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
+                                        <button  className="page-link" onClick={() => changeCurrPage(n)}>{n}</button>
+                                    </li>
+                                )
+                            }
                         })
                     }
                     <li className="page-item">
